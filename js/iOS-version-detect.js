@@ -159,7 +159,7 @@ function detect() {
     info_browser_version: BrowserDetect.version,
     BrowserDetect
   };
-  if(info["info_os"]=="iPhone/iPod"){
+  if(info["info_os"]=="iPhone/iPod"||info["info_os"]=="Mac"||(info["info_os"]=="an unknown OS"&&(info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPad")||info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPone")||info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPod")))){
 	if(info["info_browser_version"]=="an unknown version"){
 		var re = /[0-9_]+(?= like Mac OS)/;
 		let version_str = re.exec(info["BrowserDetect"]["dataBrowser"][0]["string"])[0].replaceAll("_",".");
@@ -185,7 +185,10 @@ function detect() {
 	}
 
 	if(parseFloat(info["info_browser_version"])<=15.1){
-		alert("Please update your iOS version to no older than iOS 15.1!");
+		alert("Please update your iOS version to no lower than iOS 15.1!");
+	}
+	else if(info["info_os"]=="an unknown OS"){
+		alert("If your device is using iOS system. Please make sure your iOS version is newer than iOS 15.1!");
 	}
    }
   return info;
