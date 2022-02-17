@@ -185,10 +185,10 @@ function detect() {
 	}
 
 	if(parseFloat(info["info_browser_version"])<=15.1){
-		alert("Please update your iOS to 15.2 or a newer version!");
+		alert("Please upgrade your iOS to 15.2 or a newer version.");
 	}
 	else if(info["info_os"]=="an unknown OS"){
-		alert("If your device is using iOS system. Please make sure your iOS 15.2 or a newer version!");
+		alert("If your device is using iOS system. Please make sure to upgrade your iOS to 15.2 or a newer version!");
 	}
    }
   return info;
