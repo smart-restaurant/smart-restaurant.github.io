@@ -187,8 +187,8 @@ function detect() {
 		version = parseFloat(version_str);
 	}
 	info["info_browser_version"] = version;
-	alert(version);
-	if(version<10){
+	var critical_Mac_OS_ver = "10.15.6";
+	if(critical_Mac_OS_ver.localeCompare(version_str)==1){
 		alert("Please update your Mac OS version to no lower than 10.0!");
 	}
   }
