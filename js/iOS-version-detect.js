@@ -159,7 +159,44 @@ function detect() {
     info_browser_version: BrowserDetect.version,
     BrowserDetect
   };
-  if(info["info_os"]=="iPhone/iPod"||info["info_os"]=="Mac"||(info["info_os"]=="an unknown OS"&&(info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPad")||info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPone")||info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPod")))){
+    if(info["info_os"]=="Mac"){
+	//var re = /(?<=Mac OS X )+[0-9_]+/; //ref: wiki: look behind expression: (?<=pattern)
+	// We have to do it this way cause the older version of javascript regular expression does not support look behind expression
+	var re = /[0-9_]+(?= X SO caM)/;
+	var reverse_os_info = info["BrowserDetect"]["dataBrowser"][0]["string"].split('').reverse().join('');	
+	let reversed_version_str = re.exec(reverse_os_info)[0];
+	let version_str = reversed_version_str.split('').reverse().join('');
+	version_str = version_str.replaceAll("_",".");
+
+	var version;
+	var cnt;
+	if(version_str.split(".").length-1>=2){//if the version string contains more than one dot, we will only take the numbers before the second dot to parse as float for comparsion
+		for(let i=0, cnt=0; i<version_str.length; i++){
+			if(version_str[i]=="."){
+				if(cnt==0){
+					cnt=1;
+				}
+				else if(cnt==1){
+					version = parseFloat(version_str.substring(0,i));
+					break;
+				}
+			}	
+		}
+	}
+	else{
+		version = parseFloat(version_str);
+	}
+	info["info_browser_version"] = version;
+	alert(version);
+	if(version<10){
+		alert("Please update your Mac OS version to no lower than 10.0!");
+	}
+  }
+  else if(info["info_os"]=="iPhone/iPod"
+		||(info["info_os"]=="an unknown OS"&&(info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPad")
+		||info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPone")
+		||info["BrowserDetect"]["dataBrowser"][0]["string"].includes("iPod")))){
+
 	if(info["info_browser_version"]=="an unknown version"){
 		var re = /[0-9_]+(?= like Mac OS)/;
 		let version_str = re.exec(info["BrowserDetect"]["dataBrowser"][0]["string"])[0].replaceAll("_",".");
@@ -185,10 +222,10 @@ function detect() {
 	}
 
 	if(parseFloat(info["info_browser_version"])<=15.1){
-		alert("Please upgrade your iOS to 15.2 or a newer version.");
+		alert("Please update your iOS version to no lower than iOS 15.1!");
 	}
 	else if(info["info_os"]=="an unknown OS"){
-		alert("If your device is using iOS system. Please make sure to upgrade your iOS to 15.2 or a newer version!");
+		alert("If your device is using iOS system. Please make sure your iOS version is newer than iOS 15.1!");
 	}
    }
   return info;
